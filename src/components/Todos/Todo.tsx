@@ -26,7 +26,7 @@ export default function Todos () {
       <input placeholder="description" {...register('description')}/>
       <br/>
       <br/>
-      <input type="submit"/>
+      <input type="submit" disabled={createTodo.isPending} value={createTodo.isPending ? 'Creating..' : 'Create' }/>
     </form>
     <ul>
       {allTodos.map(res => {
