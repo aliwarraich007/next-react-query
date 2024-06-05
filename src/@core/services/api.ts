@@ -21,3 +21,7 @@ export const createTodo = async (data: Todo) => {
 export const updateTodo = async (data: Todo) => {
   return await axiosInstance.put(`todos/${data.id}`, data);
 };
+
+export const deleteTodo = async (id: number | undefined) => {
+  await axiosInstance.delete(`todos/${id}`);
+};
