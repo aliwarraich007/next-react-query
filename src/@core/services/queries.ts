@@ -14,7 +14,8 @@ export function useAllTodos(ids: (number | undefined)[] | undefined) {
   return useQueries({
     queries: (ids ?? []).map((id) => {
       return {
-        queryKey: ["todo", id],
+        // always pass query params in {}
+        queryKey: ["todo", { id }],
         queryFn: () => fetchAllTodods(id!),
       };
     }),

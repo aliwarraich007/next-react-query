@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Todo } from "../types/todo";
-import { createTodo } from "./api";
+import { createTodo, updateTodo } from "./api";
 
 export function useCreateTodo() {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export function useCreateTodo() {
     // has access to data returned by the mutation function (mutationFN) and error if error fails
     // variables is another attribute that is accessed by this function as third parameter
     // variables are the inputs (form data) that is given to the mutaitonFN
-    onSettled: (_, error) => {
+    onSettled: async (_, error) => {
       if (error) console.log(error);
       else {
         // invalidate query refetches the data from the server
@@ -21,7 +21,25 @@ export function useCreateTodo() {
         // data from the server.
         // no need for refreshing page
         // automatically data is updated for the user
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
+        // should be an async operations
+        await queryClient.invalidateQueries({ queryKey: ["todos"] });
+      }
+    },
+  });
+}
+
+export function useUpdateTodo() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: Todo) => updateTodo(data),
+    onSettled: async (_, error, variables) => {
+      if (error) console.log(error);
+      else {
+        await queryClient.invalidateQueries({ queryKey: ["todos"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["todo", { id: variables.id }],
+        });
       }
     },
   });

@@ -17,3 +17,7 @@ export const fetchAllTodods = async (id: number | undefined) => {
 export const createTodo = async (data: Todo) => {
   return await axiosInstance.post("todos", data);
 };
+
+export const updateTodo = async (data: Todo) => {
+  return await axiosInstance.put(`todos/${data.id}`, data);
+};
